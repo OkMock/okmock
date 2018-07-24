@@ -1,0 +1,17 @@
+ext.versions = [
+    code                  : 1000000,
+    name                  : '1.0.0',
+    retrofit              : '2.3.0',
+    kotlin                : '1.2.51',
+]
+
+
+ext.gradlePlugins = [
+    kotlin                 : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+    kotlinAndroidExtensions: "org.jetbrains.kotlin:kotlin-android-extensions:$versions.kotlin",
+]
+
+ext.libs = [
+    kotlin                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+    retrofit              : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        ]
