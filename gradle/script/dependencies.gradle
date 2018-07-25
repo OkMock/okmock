@@ -1,17 +1,29 @@
+ext.okmock_group = 'io.okmock'
+ext.okmock_version = '1.0-SNAPSHOT'
+
 ext.versions = [
-    code                  : 1000000,
-    name                  : '1.0.0',
-    retrofit              : '2.3.0',
-    kotlin                : '1.2.51',
+
+    kotlin : '1.2.41',
+    ktor   : '0.9.3',
+    logback: '1.2.1',
+    junit  : '4.12'
+
 ]
 
 
 ext.gradlePlugins = [
-    kotlin                 : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
-    kotlinAndroidExtensions: "org.jetbrains.kotlin:kotlin-android-extensions:$versions.kotlin",
-]
 
+    kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+
+]
 ext.libs = [
-    kotlin                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
-    retrofit              : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-        ]
+
+    //
+    kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
+    ktor_server_netty: "io.ktor:ktor-server-netty:$versions.ktor",
+    ktor_websocket   : "io.ktor:ktor-websockets:$versions.ktor",
+    logback_classic  : "ch.qos.logback:logback-classic:$versions.logback",
+    //test
+    junit            : "junit:junit:$versions.junit"
+
+]
