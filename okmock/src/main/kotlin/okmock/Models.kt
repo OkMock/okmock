@@ -16,10 +16,49 @@
 
 package okmock
 
+import okmock.ModifyAction.RequestModifyAction
+import java.io.InputStream
+
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
  */
 
 data class Config(val port: Int)
 
+enum class MethodType {
+    GET, POST, DELETE, HEAD, PUT, PATCH
+}
 
+sealed class CallAction {
+    /**
+     * Indicates that the interceptor should return the raw response, instead of actually calling the real Webservice.
+     */
+    data class GeneratedResponse(val response: RawResponse) : CallAction()
+
+    /**
+     * Indicates that the interceptor should modify the request with the given list of RequestModifyActions and call the real webservice with the modified request.
+     */
+    data class ModifyRequest(val modifyActions: List<RequestModifyAction>) : CallAction()
+}
+
+data class RawResponse(val responseCode: Int, val contentType: String,
+        val headers: Map<String, String>, val contentLength: Long, val responseBody: InputStream)
+
+sealed class ModifyAction {
+    /**
+     * Actions that affect the request.
+     */
+    sealed class RequestModifyAction {
+        /**
+         * Adds a header to the request. Should replace a header, If one already exists.
+         */
+        data class AddHeader(val name: String, val value: String) : RequestModifyAction()
+
+        /**
+         * Removes a header from the request.
+         */
+        data class RemoveHeader(val name: String) : RequestModifyAction()
+    }
+}
+
+data class RequestLog(val id:String)

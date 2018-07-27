@@ -3,7 +3,7 @@ ext.okmock_version = '1.0-SNAPSHOT'
 
 ext.versions = [
 
-    kotlin : '1.2.41',
+    kotlin : '1.2.51',
     ktor   : '0.9.3',
     logback: '1.2.1',
     retrofit: '2.4.0',
