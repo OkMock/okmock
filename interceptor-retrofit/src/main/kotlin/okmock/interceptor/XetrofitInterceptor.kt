@@ -60,10 +60,10 @@ class XetrofitInterceptor : Interceptor, OKMockInterceptor {
         return chain.proceed(chain.request())
     }
 
-}
+    private fun RequestBody?.asByteArray(): ByteArray {
+        if (this == null)
+            return ByteArray(0)
+        return Buffer().apply { writeTo(this) }.readByteArray()
+    }
 
-private fun RequestBody?.asByteArray(): ByteArray {
-    if (this == null)
-        return ByteArray(0)
-    return Buffer().apply { writeTo(this) }.readByteArray()
 }
