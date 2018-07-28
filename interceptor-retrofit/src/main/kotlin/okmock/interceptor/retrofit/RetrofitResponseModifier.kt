@@ -16,7 +16,7 @@
  *
  */
 
-package okmock.interceptor
+package okmock.interceptor.retrofit
 
 import okhttp3.Interceptor.Chain
 import okhttp3.MediaType

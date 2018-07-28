@@ -16,24 +16,28 @@
  *
  */
 
-package okmock.interceptor
+package okmock.interceptor.retrofit
 
 import okhttp3.Request
-import okmock.MethodType
+import okmock.CallAction
+import okmock.ModifyAction
 
 /**
- * @return MethodType from an OKHTTP Request.
- *
+ * Applies the set of RequestModifiers to the request and returns a new one.
  * @author Adib Faramarzi (adibfara@gmail.com)
  */
-fun Request.getOKMockMethodType(): MethodType {
-    return when (this.method().toUpperCase()) {
-        "POST" -> MethodType.POST
-        "GET" -> MethodType.GET
-        "DELETE" -> MethodType.DELETE
-        "PUT" -> MethodType.PUT
-        "HEAD" -> MethodType.HEAD
-        "PATCH" -> MethodType.PATCH
-        else -> throw Exception("Method type not allowed. It must be one of the following: POST, GET, DELETE, PUT, HEAD, PATCH")
-    }
+internal fun Request.applyModifiers(callModiyAction: CallAction.ModifyRequest): Request {
+    return this.newBuilder()
+            .apply {
+                callModiyAction.modifyActions.forEach {
+                    val action = when (it) {
+                        is ModifyAction.RequestModifyAction.AddHeader -> {
+
+                        }
+                        is ModifyAction.RequestModifyAction.RemoveHeader -> {
+
+                        }
+                    }
+                }
+            }.build()
 }
