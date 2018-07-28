@@ -16,6 +16,8 @@
 
 package okmock
 
+import java.net.URL
+
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
  */
@@ -23,8 +25,19 @@ package okmock
 internal class OKMockAgent(config: Config) {
 
     private val server: Server = Server(config)
-    private val interceptors = arrayListOf<OKMockInterceptor>()
+    private val interceptors = mutableListOf<OKMockInterceptor>()
     private val mediator: Mediator = object : Mediator {
+        override fun getCallAction(methodType: MethodType, url: URL, headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
+            TODO("not implemented")
+        }
+
+        override fun logRequestCall(methodType: MethodType, url: URL, toMultimap: Map<String, MutableList<String>>, body: ByteArray): RequestLog {
+            TODO("not implemented")
+        }
+
+        override fun logResponse(requestLog: RequestLog, responseCode: Int, headers: Map<String, MutableList<String>>, receivedResponseAtMillis: Long, body: ByteArray) {
+            TODO("not implemented")
+        }
 
     }
 
@@ -36,7 +49,7 @@ internal class OKMockAgent(config: Config) {
         server.stop()
     }
 
-    fun addInterceptor(interceptor: OKMockInterceptor) {
+    fun addInterceptorxx(interceptor: OKMockInterceptor) {
         interceptor.onInitialize(mediator)
         interceptors.add(interceptor)
     }
