@@ -20,6 +20,7 @@ import java.net.URL
 
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
+ * @author Adib Faramarzi (adibfara@gmail.com)
  */
 
 interface Mediator {

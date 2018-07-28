@@ -8,7 +8,15 @@ import okmock.CallAction
 import okmock.Mediator
 import okmock.OKMockInterceptor
 
-class XetrofitInterceptor : Interceptor, OKMockInterceptor {
+/**
+ * Retrofit Interceptor for OKMock.
+ * Can be added to your Retrofit.Builder with Retrofit.Builder().addOKMock()
+ *
+ *
+ * @author Adib Faramarzi (adibfara@gmail.com)
+ */
+
+class RetrofitInterceptor : Interceptor, OKMockInterceptor {
 
     private lateinit var mediator: Mediator
 
@@ -53,7 +61,7 @@ class XetrofitInterceptor : Interceptor, OKMockInterceptor {
                     code(),
                     headers().toMultimap(),
                     receivedResponseAtMillis(),
-                    body()?.bytes()?: ByteArray(0)
+                    body()?.bytes() ?: ByteArray(0)
 
             )
         }

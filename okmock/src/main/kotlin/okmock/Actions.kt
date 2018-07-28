@@ -17,6 +17,24 @@
 package okmock
 
 /**
- * @author Saeed Masoumi (7masoumi@gmail.com)
+ * Actions used to modify the request and response.
+ *
+ * @author Adib Faramarzi (adibfara@gmail.com)
  */
 
+sealed class ModifyAction {
+    /**
+     * Actions that affect the request.
+     */
+    sealed class RequestModifyAction {
+        /**
+         * Adds a header to the request. Should replace a header, If one already exists.
+         */
+        data class AddHeader(val name: String, val value: String) : RequestModifyAction()
+
+        /**
+         * Removes a header from the request.
+         */
+        data class RemoveHeader(val name: String) : RequestModifyAction()
+    }
+}

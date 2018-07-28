@@ -19,11 +19,12 @@
 package okmock.interceptor
 
 import okhttp3.Request
-import okmock.ModifyAction
 import okmock.CallAction
+import okmock.ModifyAction
 
 /**
  * Applies the set of RequestModifiers to the request and returns a new one.
+ * @author Adib Faramarzi (adibfara@gmail.com)
  */
 internal fun Request.applyModifiers(callModiyAction: CallAction.ModifyRequest): Request {
     return this.newBuilder()

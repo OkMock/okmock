@@ -21,8 +21,13 @@ package okmock.interceptor
 import okhttp3.Request
 import okmock.MethodType
 
-fun Request.getOKMockMethodType(): MethodType{
-    return when(this.method().toUpperCase()){
+/**
+ * @return MethodType from an OKHTTP Request.
+ *
+ * @author Adib Faramarzi (adibfara@gmail.com)
+ */
+fun Request.getOKMockMethodType(): MethodType {
+    return when (this.method().toUpperCase()) {
         "POST" -> MethodType.POST
         "GET" -> MethodType.GET
         "DELETE" -> MethodType.DELETE

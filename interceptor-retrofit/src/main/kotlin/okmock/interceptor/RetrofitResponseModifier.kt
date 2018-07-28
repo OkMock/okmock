@@ -29,8 +29,10 @@ import okmock.CallAction
 /**
  * Creates a new retrofit response based off a CallAction.
  * Will call the real webservice when the CallAction is not a GeneratedResponse
+ *
+ * @author Adib Faramarzi (adibfara@gmail.com)
  */
-fun Request.createRetrofitResponse(chain: Chain, requestSentAt:Long, callAction: CallAction) : Response{
+fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long, callAction: CallAction): Response {
     return when (callAction) {
         is CallAction.GeneratedResponse -> Response.Builder().apply {
             callAction.response.headers.forEach { key, value ->
