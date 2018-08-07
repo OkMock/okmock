@@ -16,6 +16,8 @@
 
 package okmock
 
+import java.net.URL
+
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
  */
@@ -25,6 +27,17 @@ internal class OKMockAgent(config: Config) {
     private val server: Server = Server(config)
     private val interceptors = arrayListOf<OKMockInterceptor>()
     private val mediator: Mediator = object : Mediator {
+        override fun getCallAction(methodType: MethodType, url: URL, headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun logRequestCall(methodType: MethodType, url: URL, toMultimap: Map<String, MutableList<String>>, body: ByteArray): RequestLog {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun logResponse(requestLog: RequestLog, responseCode: Int, headers: Map<String, MutableList<String>>, receivedResponseAtMillis: Long, body: ByteArray) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
     }
 

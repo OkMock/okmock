@@ -7,7 +7,8 @@ ext.versions = [
     ktor   : '0.9.3',
     logback: '1.2.1',
     retrofit: '2.4.0',
-    junit  : '4.12'
+    mockk: '1.8.6',
+    junit  : '5.1.0'
 
 ]
 
@@ -26,6 +27,7 @@ ext.libs = [
     logback_classic  : "ch.qos.logback:logback-classic:$versions.logback",
     retrofit  : "com.squareup.retrofit2:retrofit:$versions.retrofit",
     //test
-    junit            : "junit:junit:$versions.junit"
+    junit            : "org.junit.jupiter:junit-jupiter-api:$versions.junit",
+    mockk            : "io.mockk:mockk:$versions.mockk"
 
 ]

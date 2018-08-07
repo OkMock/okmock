@@ -83,6 +83,7 @@ internal class RetrofitInterceptor : Interceptor, OKMockInterceptor {
 
             )
         }
+        response.peekBody()
         return chain.proceed(chain.request())
     }
 
