@@ -48,20 +48,22 @@ internal class RetrofitInterceptor : Interceptor, OKMockInterceptor {
             throw Exception(
                     "OKMock is not configured. Please initialize OKMock before adding the interceptor.")
         }
-        val request = chain.request().newBuilder().build()
+        val request = chain.request()
         val requestSentAt = System.currentTimeMillis()
 
-        val requestModifiers = mediator.getCallAction(
+        val modifiers = mediator.getCallAction(
                 request.getOKMockMethodType(),
                 request.url().url(),
                 request.headers().toMultimap(),
                 request.body().asByteArray()
         )
 
-        val updatedRequest = when (requestModifiers) {
+
+        val updatedRequest = when (modifiers) {
             is CallAction.GeneratedResponse -> request
-            is CallAction.ModifyRequest -> request.applyModifiers(requestModifiers)
+            is CallAction.Modify -> request.applyModifiers(modifiers)
         }
+
 
         val loggedRequest = updatedRequest.newBuilder().build().let {
             mediator.logRequestCall(
@@ -71,9 +73,15 @@ internal class RetrofitInterceptor : Interceptor, OKMockInterceptor {
                     it.body().asByteArray()
             )
         }
-
-        val response = request.createRetrofitResponse(chain, requestSentAt, requestModifiers)
-        response.newBuilder().build().apply {
+        val response = when (modifiers) {
+            is CallAction.GeneratedResponse -> {
+                request.createRetrofitResponse(chain, requestSentAt, modifiers)
+            }
+            is CallAction.Modify -> {
+                chain.proceed(updatedRequest).applyModifiers(modifiers)
+            }
+        }
+        response.apply {
             mediator.logResponse(
                     loggedRequest,
                     code(),
@@ -83,8 +91,9 @@ internal class RetrofitInterceptor : Interceptor, OKMockInterceptor {
 
             )
         }
-        response.peekBody()
-        return chain.proceed(chain.request())
+        return response
+
+
     }
 
     private fun RequestBody?.asByteArray(): ByteArray {

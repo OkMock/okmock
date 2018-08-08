@@ -39,7 +39,7 @@ sealed class CallAction {
     /**
      * Indicates that the interceptor should modify the request with the given list of RequestModifyActions and call the real webservice with the modified request.
      */
-    data class ModifyRequest(val modifyActions: List<RequestModifyAction>) : CallAction()
+    data class Modify(val requestModifyActions: List<RequestModifyAction>, val responseModifyActions: List<ModifyAction.ResponseModifyAction> = listOf()) : CallAction()
 }
 
 data class RawResponse(val responseCode: Int, val contentType: String,

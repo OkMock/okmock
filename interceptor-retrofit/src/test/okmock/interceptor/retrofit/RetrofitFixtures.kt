@@ -77,6 +77,7 @@ fun sampleRetrofitResponse(request: Request, code: Int, message: String? = null,
                 message?.let {
                     message(it)
                 }
+                protocol(Protocol.HTTP_1_1)
 
             }
             .build()
@@ -118,8 +119,13 @@ fun createRequestBody(fromByteArray: ByteArray, contentType: MediaType): Request
     return RequestBody.create(contentType, fromByteArray)
 }
 
-fun createChain(request: Request, response: Response): Interceptor.Chain {
-    return object : Interceptor.Chain {
+/**
+ * Creates a OKHttp Chain for testing
+ * @param request the OKHttp Request for the chain to use
+ * @param response the OKHttp Response for the chain to use and respond to the request with
+ * @param requestValidator validating function to be run on the request before using it for execution
+ */
+open class TestChain(val request: Request, val response: Response, val requestValidator: ((Request?) -> Unit)? = null) : Interceptor.Chain {
         override fun writeTimeoutMillis(): Int {
             return 1
         }
@@ -147,6 +153,7 @@ fun createChain(request: Request, response: Response): Interceptor.Chain {
                 }
 
                 override fun request(): Request {
+                    println("request() ${request().headers()}")
                     return request
                 }
 
@@ -158,6 +165,9 @@ fun createChain(request: Request, response: Response): Interceptor.Chain {
         }
 
         override fun proceed(request: Request?): Response {
+            println("proceeding request")
+            println(request?.headers())
+            requestValidator?.invoke(request)
             return response
         }
 
@@ -189,7 +199,6 @@ fun createChain(request: Request, response: Response): Interceptor.Chain {
             return 1
         }
 
-    }
 }
 
 abstract class SampleMediator : Mediator {

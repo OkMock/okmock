@@ -37,4 +37,19 @@ sealed class ModifyAction {
          */
         data class RemoveHeader(val name: String) : RequestModifyAction()
     }
+
+    /**
+     * Actions that affect the returned response.
+     */
+    sealed class ResponseModifyAction {
+        /**
+         * Adds a header to the request. Should replace a header, If one already exists.
+         */
+        data class AddHeader(val name: String, val value: String) : ResponseModifyAction()
+
+        /**
+         * Removes a header from the request.
+         */
+        data class RemoveHeader(val name: String) : ResponseModifyAction()
+    }
 }

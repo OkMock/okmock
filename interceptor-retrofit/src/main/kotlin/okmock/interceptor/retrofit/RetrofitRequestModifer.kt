@@ -26,16 +26,16 @@ import okmock.ModifyAction
  * Applies the set of RequestModifiers to the request and returns a new one.
  * @author Adib Faramarzi (adibfara@gmail.com)
  */
-internal fun Request.applyModifiers(callModiyAction: CallAction.ModifyRequest): Request {
+internal fun Request.applyModifiers(callModifyAction: CallAction.Modify): Request {
     return this.newBuilder()
             .apply {
-                callModiyAction.modifyActions.forEach {
-                    val action = when (it) {
+                callModifyAction.requestModifyActions.forEach {
+                    when (it) {
                         is ModifyAction.RequestModifyAction.AddHeader -> {
-
+                            addHeader(it.name, it.value)
                         }
                         is ModifyAction.RequestModifyAction.RemoveHeader -> {
-
+                            removeHeader(it.name)
                         }
                     }
                 }

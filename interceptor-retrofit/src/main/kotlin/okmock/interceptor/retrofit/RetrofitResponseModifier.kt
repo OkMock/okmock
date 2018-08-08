@@ -25,6 +25,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okio.Okio
 import okmock.CallAction
+import okmock.ModifyAction
 
 /**
  * Creates a new retrofit response based off a CallAction.
@@ -50,6 +51,27 @@ fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long, callAction
             receivedResponseAtMillis(System.currentTimeMillis())
 
         }.build()
-        is CallAction.ModifyRequest -> chain.proceed(this)
+        is CallAction.Modify -> chain.proceed(this)
     }
+}
+
+
+/**
+ * Applies the set of ResponseModifiers to the response and returns a new one.
+ * @author Adib Faramarzi (adibfara@gmail.com)
+ */
+internal fun Response.applyModifiers(callModifyAction: CallAction.Modify): Response {
+    return this.newBuilder()
+            .apply {
+                callModifyAction.responseModifyActions.forEach {
+                    when (it) {
+                        is ModifyAction.ResponseModifyAction.AddHeader -> {
+                            addHeader(it.name, it.value)
+                        }
+                        is ModifyAction.ResponseModifyAction.RemoveHeader -> {
+                            removeHeader(it.name)
+                        }
+                    }
+                }
+            }.build()
 }
