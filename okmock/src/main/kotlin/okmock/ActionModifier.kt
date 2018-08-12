@@ -32,6 +32,6 @@ interface ActionModifier {
      */
     fun matcher(methodType: MethodType, url: URL,
             headers: Map<String, MutableList<String>>,
-            body: ByteArray): Rule
+            body: ByteArray): Rule?
 }
 

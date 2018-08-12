@@ -26,8 +26,8 @@ class RuleEngine constructor(private val repository: Repository<Rule>) {
      * @param requestDto
      * @return Rule
      */
-    fun match(requestDto: RequestDto): Rule {
-        throw  NotImplementedError()
+    fun match(requestDto: RequestDto): Rule? {
+        return repository.search(requestDto)
     }
 
 }

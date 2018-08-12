@@ -36,7 +36,7 @@ internal class OKMockAgent(config: Config) {
     private val mediator: Mediator = object : Mediator {
         override fun getCallAction(methodType: MethodType, url: URL,
                 headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
-            return actionModifier.matcher(methodType, url, headers, body).action
+            return actionModifier.matcher(methodType, url, headers, body)!!.action
         }
 
         override fun logRequestCall(methodType: MethodType, url: URL,

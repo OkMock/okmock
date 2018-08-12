@@ -25,7 +25,7 @@ import java.net.URL
 open class ActionModifierImp constructor(
         private val ruleEngine: RuleEngine) : ActionModifier {
     override fun matcher(methodType: MethodType, url: URL,
-            headers: Map<String, MutableList<String>>, body: ByteArray): Rule {
+            headers: Map<String, MutableList<String>>, body: ByteArray): Rule? {
 
         return ruleEngine.match(RequestDto(methodType, url, headers, body))
     }

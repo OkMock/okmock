@@ -54,7 +54,7 @@ data class RequestLog(val id: String)
 
 
 data class RequestDto(val methodType: MethodType, val url: URL,
-        val headers: Map<String, String>, val body: ByteArray)
+        val headers: Map<String, MutableList<String>>, val body: ByteArray)
 
 
 //TODO Add AND OR ... to Filter
@@ -79,10 +79,12 @@ data class Rule(var id: String? = null, var filter: Filter, var action: CallActi
         }
         filter.headers?.let { filterHeaders ->
             val mutableFilterHeaders = HashMap(filterHeaders)
-            requestDto.headers.forEach { raw ->
-                if (filterHeaders.containsKey(raw.key)) {
-                    mutableFilterHeaders.remove(raw.key)
-                    if (mutableFilterHeaders.size == 0) return this
+            requestDto.headers.forEach { requestRaw ->
+                if (filterHeaders.containsKey(requestRaw.key)){
+                    if (requestRaw.value.contains(filterHeaders[requestRaw.key])){
+                        mutableFilterHeaders.remove(requestRaw.key)
+                        if (mutableFilterHeaders.size == 0) return this
+                    }
                 }
             }
         }

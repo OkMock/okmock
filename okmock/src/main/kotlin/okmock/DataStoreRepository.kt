@@ -32,9 +32,9 @@ class DataStoreRepository : Repository<Rule> {
         strategy = f
     }
 
-    override fun search(requestDto: RequestDto): Rule? {
+    override fun search(request: RequestDto): Rule? {
 
-       return strategy(requestDto,dataStore)
+       return strategy(request,dataStore)
     }
 
     companion object {
