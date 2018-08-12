@@ -16,9 +16,22 @@
 
 package okmock
 
-/**
- * @author Saeed Masoumi (7masoumi@gmail.com)
- */
+import java.net.URL
 
-interface DataSource {
+/**
+ * @author Amin Bahiraei (mr.bahiraee@gmail.com)
+ */
+interface ActionModifier {
+
+    /**
+     * @param methodType POST GET ...
+     * @param url path url
+     * @param headers the map that has headers
+     * @param body
+     *
+     */
+    fun matcher(methodType: MethodType, url: URL,
+            headers: Map<String, MutableList<String>>,
+            body: ByteArray): Rule
 }
+

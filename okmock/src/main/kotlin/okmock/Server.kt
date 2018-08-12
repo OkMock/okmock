@@ -26,6 +26,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import io.ktor.websocket.webSocket
+import java.net.URL
 
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
@@ -42,6 +43,10 @@ class Server(private val config: Config) {
     fun stop() {
         //engine.stop()
     }
+    fun notify(methodType: MethodType, url: URL, headers: Map<String, MutableList<String>>,
+            body: ByteArray) {
+
+    }
 
 }
 
@@ -54,6 +59,7 @@ fun Application.okmockServer() {
 
         }
     }
+
 
 }
 

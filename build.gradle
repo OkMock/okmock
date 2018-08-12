@@ -3,10 +3,13 @@ buildscript {
 
   repositories {
     mavenCentral()
+    maven { url 'https://maven.google.com' }
   }
+
 
   dependencies {
     classpath gradlePlugins.kotlin
+    classpath gradlePlugins.android
   }
 }
 
@@ -21,6 +24,7 @@ subprojects {
       mavenCentral()
       jcenter()
       maven { url "https://dl.bintray.com/kotlin/ktor" }
+      maven { url 'https://maven.google.com' }
     }
   }
 }

@@ -18,6 +18,7 @@ package okmock
 
 import java.net.URL
 
+
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
  */
@@ -26,17 +27,28 @@ internal class OKMockAgent(config: Config) {
 
     private val server: Server = Server(config)
     private val interceptors = mutableListOf<OKMockInterceptor>()
+    private val repository = RepositoryFactory.createRepository()
+    private val ruleEngine = RuleEngine(repository)
+
+    private val actionModifier = ActionModifierImp(ruleEngine)
+    private val logger = LoggerImp()
+
     private val mediator: Mediator = object : Mediator {
-        override fun getCallAction(methodType: MethodType, url: URL, headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
-            TODO("not implemented")
+        override fun getCallAction(methodType: MethodType, url: URL,
+                headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
+            return actionModifier.matcher(methodType, url, headers, body).action
         }
 
-        override fun logRequestCall(methodType: MethodType, url: URL, toMultimap: Map<String, MutableList<String>>, body: ByteArray): RequestLog {
-            TODO("not implemented")
+        override fun logRequestCall(methodType: MethodType, url: URL,
+                headers: Map<String, MutableList<String>>, body: ByteArray): RequestLog {
+            server.notify(methodType, url, headers, body)
+            return logger.logRequest(methodType, url, headers, body)
         }
 
-        override fun logResponse(requestLog: RequestLog, responseCode: Int, headers: Map<String, MutableList<String>>, receivedResponseAtMillis: Long, body: ByteArray) {
-            TODO("not implemented")
+        override fun logResponse(requestLog: RequestLog, responseCode: Int,
+                headers: Map<String, MutableList<String>>, receivedResponseAtMillis: Long,
+                body: ByteArray) {
+            logger.logResponse(requestLog, responseCode, headers, receivedResponseAtMillis, body)
         }
 
     }
@@ -49,7 +61,7 @@ internal class OKMockAgent(config: Config) {
         server.stop()
     }
 
-    fun addInterceptorxx(interceptor: OKMockInterceptor) {
+    fun addInterceptor(interceptor: OKMockInterceptor) {
         interceptor.onInitialize(mediator)
         interceptors.add(interceptor)
     }

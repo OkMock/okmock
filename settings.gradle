@@ -1,3 +1,4 @@
+include ':okmock-android'
 rootProject.name = 'okmock'
 include 'okmock', 'interceptor-retrofit'
 

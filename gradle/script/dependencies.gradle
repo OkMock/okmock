@@ -3,18 +3,21 @@ ext.okmock_version = '1.0-SNAPSHOT'
 
 ext.versions = [
 
-    kotlin : '1.2.51',
-    ktor   : '0.9.3',
-    logback: '1.2.1',
+    kotlin  : '1.2.51',
+    ktor    : '0.9.3',
+    logback : '1.2.1',
     retrofit: '2.4.0',
-    junit  : '4.12'
+    junit   : '5.1.0-M2',
+    android : '3.1.0',
+    mockk   : '1.8.1'
 
 ]
 
 
 ext.gradlePlugins = [
 
-    kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+    kotlin : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
+    android: "com.android.tools.build:gradle:$versions.android"
 
 ]
 ext.libs = [
@@ -24,8 +27,9 @@ ext.libs = [
     ktor_server_netty: "io.ktor:ktor-server-netty:$versions.ktor",
     ktor_websocket   : "io.ktor:ktor-websockets:$versions.ktor",
     logback_classic  : "ch.qos.logback:logback-classic:$versions.logback",
-    retrofit  : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+    retrofit         : "com.squareup.retrofit2:retrofit:$versions.retrofit",
     //test
-    junit            : "junit:junit:$versions.junit"
+    junit            : "org.junit.jupiter:junit-jupiter-api:$versions.junit",
+    mockk            : "io.mockk:mockk:$versions.mockk"
 
 ]

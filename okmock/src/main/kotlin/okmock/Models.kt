@@ -18,6 +18,8 @@ package okmock
 
 import okmock.ModifyAction.RequestModifyAction
 import java.io.InputStream
+import java.net.URL
+import java.util.function.BiConsumer
 
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
@@ -42,8 +44,45 @@ sealed class CallAction {
     data class ModifyRequest(val modifyActions: List<RequestModifyAction>) : CallAction()
 }
 
+
 data class RawResponse(val responseCode: Int, val contentType: String,
-        val headers: Map<String, String>, val contentLength: Long, val responseBody: InputStream)
+        val headers: Map<String, String>? = null, val contentLength: Long,
+        val responseBody: InputStream? = null)
 
 
-data class RequestLog(val id:String)
+data class RequestLog(val id: String)
+
+
+data class RequestDto(val methodType: MethodType, val url: URL,
+        val headers: Map<String, String>, val body: ByteArray)
+
+
+//TODO Add AND OR ... to Filter
+data class Filter(var schema: String? = null, var baseUrl: String? = null,
+        var queryParams: Map<String, String>? = null,
+        var path: String? = null,
+        var methodType: MethodType? = null, var headers: Map<String, String>? = null)
+
+
+data class Rule(var id: String? = null, var filter: Filter, var action: CallAction) {
+    fun match(requestDto: RequestDto): Rule? {
+        requestDto.url.path.let {
+            if (it == filter.path) return this
+        }
+        requestDto.url.protocol.let {
+            if (it == filter.schema) return this
+        }
+        requestDto.url.host.let {
+            if (it == filter.baseUrl) return this
+        }
+        requestDto.methodType.let {
+            if (it == filter.methodType) return this
+        }
+
+        requestDto.headers.forEach{raw ->
+            raw.key
+        }
+        return null
+    }
+}
+
