@@ -65,23 +65,48 @@ data class Filter(var schema: String? = null, var baseUrl: String? = null,
 
 
 data class Rule(var id: String? = null, var filter: Filter, var action: CallAction) {
+
     fun match(requestDto: RequestDto): Rule? {
-        requestDto.url.path.let {
-            if (it == filter.path) return this
+        filter.path?.let { filterPath ->
+            requestDto.url.path.let {
+                if (it == filterPath) return this
+            }
         }
-        requestDto.url.protocol.let {
-            if (it == filter.schema) return this
+        filter.methodType?.let { filterMethodType ->
+            requestDto.methodType.let {
+                if (it == filterMethodType) return this
+            }
         }
-        requestDto.url.host.let {
-            if (it == filter.baseUrl) return this
+        filter.headers?.let { filterHeaders ->
+            val mutableFilterHeaders = HashMap(filterHeaders)
+            requestDto.headers.forEach { raw ->
+                if (filterHeaders.containsKey(raw.key)) {
+                    mutableFilterHeaders.remove(raw.key)
+                    if (mutableFilterHeaders.size == 0) return this
+                }
+            }
         }
-        requestDto.methodType.let {
-            if (it == filter.methodType) return this
+        filter.queryParams?.let { filterQueryParams ->
+            val mutableFilterQueryParam = HashMap(filterQueryParams)
+            requestDto.headers.forEach { raw ->
+                if (filterQueryParams.containsKey(raw.key)) {
+                    mutableFilterQueryParam.remove(raw.key)
+                    if (mutableFilterQueryParam.size == 0) return this
+                }
+            }
+        }
+        filter.schema?.let { filterSchema ->
+            requestDto.url.protocol.let {
+                if (it == filterSchema) return this
+            }
         }
 
-        requestDto.headers.forEach{raw ->
-            raw.key
+        filter.baseUrl?.let { filterBaseUrl ->
+            requestDto.url.host.let {
+                if (it == filterBaseUrl) return this
+            }
         }
+
         return null
     }
 }
