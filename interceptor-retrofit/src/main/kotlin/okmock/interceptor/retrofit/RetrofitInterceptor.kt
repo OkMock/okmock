@@ -75,7 +75,7 @@ internal class RetrofitInterceptor : Interceptor, OKMockInterceptor {
         }
         val response = when (modifiers) {
             is CallAction.GeneratedResponse -> {
-                request.createRetrofitResponse(chain, requestSentAt, modifiers)
+                request.createRetrofitResponse(updatedRequest, chain, requestSentAt, modifiers)
             }
             is CallAction.Modify -> {
                 chain.proceed(updatedRequest).applyModifiers(modifiers)

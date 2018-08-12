@@ -18,11 +18,8 @@
 
 package okmock.interceptor.retrofit
 
+import okhttp3.*
 import okhttp3.Interceptor.Chain
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.ResponseBody
 import okio.Okio
 import okmock.CallAction
 import okmock.ModifyAction
@@ -33,7 +30,7 @@ import okmock.ModifyAction
  *
  * @author Adib Faramarzi (adibfara@gmail.com)
  */
-fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long, callAction: CallAction): Response {
+fun Request.createRetrofitResponse(request: Request, chain: Chain, requestSentAt: Long, callAction: CallAction): Response {
     return when (callAction) {
         is CallAction.GeneratedResponse -> Response.Builder().apply {
             callAction.response.headers.forEach { key, value ->
@@ -46,10 +43,13 @@ fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long, callAction
                     callAction.response.contentLength,
                     Okio.buffer(Okio.source(callAction.response.responseBody))))
 
+            request(request)
+
             sentRequestAtMillis(requestSentAt)
 
             receivedResponseAtMillis(System.currentTimeMillis())
 
+            protocol(Protocol.HTTP_1_1)
         }.build()
         is CallAction.Modify -> chain.proceed(this)
     }

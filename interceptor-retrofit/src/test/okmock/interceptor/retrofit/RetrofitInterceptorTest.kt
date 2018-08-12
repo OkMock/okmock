@@ -19,9 +19,11 @@
 package okmock.interceptor.retrofit
 
 import io.mockk.spyk
+import okhttp3.MediaType
 import okmock.CallAction
 import okmock.MethodType
 import okmock.ModifyAction
+import okmock.RawResponse
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -115,6 +117,27 @@ internal class RetrofitInterceptorTest {
         })
         val response = retrofitInterceptor.intercept(TestChain(sampleRequest, sampleResponse))
         assertNull(response!!.header(expectedHeaderKey))
+    }
+
+    @Test
+    fun `test that a response is generated when using GeneratedResponse`() {
+        val expectedResponseCode = 200
+        val contentType = "application/json"
+        val body = "{\"testResponse\": \"true\"}"
+        val expectedResponseSize = body.toByteArray().size.toLong()
+        val sampleRequest = sampleRetrofitRequest()
+        retrofitInterceptor.onInitialize(object : SampleMediator() {
+            override fun getCallAction(methodType: MethodType, url: URL, headers: Map<String, MutableList<String>>, body: ByteArray): CallAction {
+                return CallAction.GeneratedResponse(RawResponse(expectedResponseCode, contentType, mapOf("response" to "OK"), expectedResponseSize, body.inputStream()))
+            }
+
+        })
+        val response = retrofitInterceptor.intercept(TestChain(sampleRequest, sampleResponse))
+        assertEquals(expectedResponseCode, response.code())
+        assertEquals("OK", response.header("response"))
+        assertEquals(expectedResponseSize, response.body()!!.contentLength())
+        assert(response.body()!!.contentType()!!.equals(MediaType.parse(contentType)))
+        assertEquals("body", response.body()!!.string())
     }
 
 }
