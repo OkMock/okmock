@@ -19,7 +19,6 @@ package okmock
 import okmock.ModifyAction.RequestModifyAction
 import java.io.InputStream
 import java.net.URL
-import java.util.function.BiConsumer
 
 /**
  * @author Saeed Masoumi (7masoumi@gmail.com)
@@ -80,8 +79,8 @@ data class Rule(var id: String? = null, var filter: Filter, var action: CallActi
         filter.headers?.let { filterHeaders ->
             val mutableFilterHeaders = HashMap(filterHeaders)
             requestDto.headers.forEach { requestRaw ->
-                if (filterHeaders.containsKey(requestRaw.key)){
-                    if (requestRaw.value.contains(filterHeaders[requestRaw.key])){
+                if (filterHeaders.containsKey(requestRaw.key)) {
+                    if (requestRaw.value.contains(filterHeaders[requestRaw.key])) {
                         mutableFilterHeaders.remove(requestRaw.key)
                         if (mutableFilterHeaders.size == 0) return this
                     }
@@ -108,7 +107,6 @@ data class Rule(var id: String? = null, var filter: Filter, var action: CallActi
                 if (it == filterBaseUrl) return this
             }
         }
-
         return null
     }
 }

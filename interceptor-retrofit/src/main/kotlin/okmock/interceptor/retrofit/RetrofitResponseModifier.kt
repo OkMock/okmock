@@ -32,13 +32,16 @@ import okmock.CallAction
  *
  * @author Adib Faramarzi (adibfara@gmail.com)
  */
-fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long, callAction: CallAction): Response {
+fun Request.createRetrofitResponse(chain: Chain, requestSentAt: Long,
+        callAction: CallAction): Response {
     return when (callAction) {
         is CallAction.GeneratedResponse -> Response.Builder().apply {
-            callAction.response.headers.forEach { key, value ->
-                addHeader(key, value)
-            }
 
+            callAction.response.headers?.let {
+                it.forEach { key, value ->
+                    addHeader(key, value)
+                }
+            }
             code(callAction.response.responseCode)
 
             body(ResponseBody.create(MediaType.parse(callAction.response.contentType),
